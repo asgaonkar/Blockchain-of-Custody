@@ -1,4 +1,12 @@
+import os
+import struct
 import argparse
+from collections import namedtuple
+
+# Import modules
+import error
+from initiate import initiate
+from verify import verify
 
 #Declare arguements
 parser = argparse.ArgumentParser()
@@ -13,6 +21,10 @@ args = parser.parse_args()
 
 action = args.action
 arguements = {}
+
+
+# file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
+file_path = "chain"
 
 # Initialise necessary arguements
 if action not in ["init", "verify"]:
@@ -31,6 +43,11 @@ if action not in ["init", "verify"]:
         arguements["item_id"] = args.i
         arguements["reason"] = args.y
         arguements["owner"] = args.o
+else:
+    if action == "init":
+        initialise = initiate(file_path)
 
-print(action)
-print(arguements)
+        if initialise:
+            raise error.Initial_Block_Error
+    else:
+        verified = verify(file_path)
