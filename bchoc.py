@@ -1,6 +1,7 @@
 import os
 import struct
 import argparse
+from datetime import datetime
 from collections import namedtuple
 
 # Import modules
@@ -26,6 +27,10 @@ arguements = {}
 # file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
 file_path = "chain"
 
+block_head_format = struct.Struct('20s d 16s I 11s I')
+block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
+block_data = namedtuple('Block_Data', 'data')
+
 # Initialise necessary arguements
 if action not in ["init", "verify"]:
     
@@ -45,9 +50,24 @@ if action not in ["init", "verify"]:
         arguements["owner"] = args.o
 else:
     if action == "init":
-        initialise = initiate(file_path)
+        to_initiate = initiate(file_path)
 
-        if initialise:
+        if not to_initiate:
+            print("Blockchain file found with INITIAL block.")
             raise error.Initial_Block_Error
+        else:
+            #Initiate a NULL Block
+            now = datetime.now()
+            timestamp = datetime.timestamp(now)
+            value = (str.encode(""), timestamp, str.encode(""), 0, str.encode("INITIAL"), 14)
+            packed_values = block_head_format.pack(*value)
+            curr_block_head = block_head._make(block_head_format.unpack(packed_values))
+            print(packed_values)
+            print(curr_block_head)    
+      
     else:
+        count = 0 # Number of Transactions
+        block_chain_state = "CLEAN" # CLEAN or ERROR 
         verified = verify(file_path)
+
+print(arguements)
