@@ -10,6 +10,7 @@ import error
 from initiate import initiate
 from insert import insert
 from verify import verify
+from remove import remove
 from display_trial import display
 
 #Declare arguements
@@ -53,6 +54,9 @@ if action not in ["init", "verify"]:
         arguements["item_id"] = args.i
         arguements["reason"] = args.y
         arguements["owner"] = args.o
+        remove(arguements["item_id"],
+               arguements["reason"], arguements["owner"], file_path)
+
 else:
     if action == "init":
         to_initiate = initiate(file_path)
