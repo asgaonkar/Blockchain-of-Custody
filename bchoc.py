@@ -1,5 +1,6 @@
 import os
 import struct
+import hashlib
 import argparse
 from datetime import datetime
 from collections import namedtuple
@@ -7,7 +8,9 @@ from collections import namedtuple
 # Import modules
 import error
 from initiate import initiate
+from insert import insert
 from verify import verify
+from display_trial import display
 
 #Declare arguements
 parser = argparse.ArgumentParser()
@@ -30,6 +33,7 @@ file_path = "chain"
 block_head_format = struct.Struct('20s d 16s I 11s I')
 block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
 block_data = namedtuple('Block_Data', 'data')
+prev_hash = b''
 
 # Initialise necessary arguements
 if action not in ["init", "verify"]:
@@ -37,6 +41,7 @@ if action not in ["init", "verify"]:
     if action == "add":
         arguements["case_id"] = args.c
         arguements["item_id"] = args.i
+        insert(arguements["case_id"], arguements["item_id"], file_path)
     elif action == "checkout" or action == "checkin":
         arguements["item_id"] = args.i
     elif action == "log":
@@ -57,13 +62,28 @@ else:
             raise error.Initial_Block_Error
         else:
             #Initiate a NULL Block
+            
             now = datetime.now()
             timestamp = datetime.timestamp(now)
-            value = (str.encode(""), timestamp, str.encode(""), 0, str.encode("INITIAL"), 14)
-            packed_values = block_head_format.pack(*value)
-            curr_block_head = block_head._make(block_head_format.unpack(packed_values))
-            print(packed_values)
-            print(curr_block_head)    
+            head_values = (str.encode(""), timestamp, str.encode(""), 0, str.encode("INITIAL"), 14)
+            data_value = (str.encode("Initial block"))
+            block_data_format = struct.Struct('14s')
+            packed_head_values = block_head_format.pack(*head_values)
+            packed_data_values = block_data_format.pack(data_value)
+            curr_block_head = block_head._make(block_head_format.unpack(packed_head_values))
+            curr_block_data = block_data._make(block_data_format.unpack(packed_data_values))
+
+            # print(curr_block_head)
+            # print(curr_block_data)
+
+            fp = open(file_path, 'wb')
+            fp.write(packed_head_values)
+            fp.write(packed_data_values)
+            fp.close()
+
+            #Initiated
+            prev_hash = hashlib.sha1(packed_head_values+packed_data_values).digest()
+            # print("Initiated a block chain")
       
     else:
         count = 0 # Number of Transactions
@@ -71,3 +91,7 @@ else:
         verified = verify(file_path)
 
 print(arguements)
+
+display(file_path) #For trial and error purpose
+
+
