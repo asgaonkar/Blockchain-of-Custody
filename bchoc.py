@@ -11,6 +11,8 @@ from initiate import initiate
 from insert import insert
 from verify import verify
 from remove import remove
+from checkin import checkin
+from checkout import checkout
 from display_trial import display
 
 #Declare arguements
@@ -45,6 +47,10 @@ if action not in ["init", "verify"]:
         insert(arguements["case_id"], arguements["item_id"], file_path)
     elif action == "checkout" or action == "checkin":
         arguements["item_id"] = args.i
+        if action == "checkout":
+            checkout(arguements["item_id"], file_path)
+        else:
+            checkin(arguements["item_id"], file_path)
     elif action == "log":
         arguements["reverse"] = args.r
         arguements["number"] = args.n
