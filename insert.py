@@ -71,7 +71,7 @@ def insert(case_id, item_id, file_path):
         fp.write(packed_data_values)
         fp.close()
 
-        print("Added item: ", i)
+        print("Added item:", i)
         print("\tStatus: CHECKEDIN")
         print("\tTime of action:", datetime.now().strftime(
             '%Y-%m-%dT%H:%M:%S.%f') + 'Z')
