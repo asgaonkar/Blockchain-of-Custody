@@ -83,15 +83,14 @@ else:
 
             #Initiated
             prev_hash = hashlib.sha1(packed_head_values+packed_data_values).digest()
-            # print("Initiated a block chain")
+            print("Blockchain file not found. Created INITIAL block.")
       
     else:
         count = 0 # Number of Transactions
         block_chain_state = "CLEAN" # CLEAN or ERROR 
         verified = verify(file_path)
 
-print(arguements)
+# print(arguements)
 
-display(file_path) #For trial and error purpose
-
+# display(file_path) #For trial and error purpose
 

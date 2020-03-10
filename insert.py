@@ -5,16 +5,18 @@ from datetime import datetime
 from collections import namedtuple
 
 def insert(case_id, item_id, file_path):
-    
-    block_head_format = struct.Struct('20s d 16s I 11s I')
-    block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
-    block_data = namedtuple('Block_Data', 'data')
+
+    print_case_count = 0
 
     success = ''
 
     fp = open(file_path, 'rb')
 
     block_head_format = struct.Struct('20s d 16s I 11s I')
+
+    # Check how many string characters for Case-ID (16 or more) !!!
+    # Check for same Case_ID and same Item_ID or Just same Item_ID !!!
+
     block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
     block_data = namedtuple('Block_Data', 'data')
 
@@ -44,7 +46,12 @@ def insert(case_id, item_id, file_path):
             # print("----Nope----")
             continue
 
+        if not print_case_count:
+            print("Case: ", case_id)
+            print_case_count += 1
+
         now = datetime.now()
+        
         timestamp = datetime.timestamp(now)
         head_values = (prev_hash, timestamp, str.encode(case_id), int(i), str.encode("CHECKEDIN"), 35)
         data_value = (str.encode("Add Item: ") + str.encode(i) + str.encode(" to Case: ") + str.encode(case_id))
@@ -63,6 +70,11 @@ def insert(case_id, item_id, file_path):
         fp.write(packed_head_values)
         fp.write(packed_data_values)
         fp.close()
+
+        print("Added item: ", i)
+        print("\tStatus: CHECKEDIN")
+        print("\tTime of action:", datetime.now().strftime(
+            '%Y-%m-%dT%H:%M:%S.%f') + 'Z')
 
     if success:
         return True
