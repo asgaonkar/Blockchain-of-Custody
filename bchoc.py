@@ -1,4 +1,5 @@
 import os
+import uuid
 import struct
 import hashlib
 import argparse
@@ -9,7 +10,6 @@ from collections import namedtuple
 import error
 from initiate import initiate
 from insert import insert
-from verify import verify
 from remove import remove
 from checkin import checkin
 from checkout import checkout
@@ -73,6 +73,9 @@ else:
         else:
             #Initiate a NULL Block
             
+            trial = '65cc391d-6568-4dcc-a3f1-86a2f04140f3'
+            x_trial = uuid.UUID(trial)
+
             now = datetime.now()
             timestamp = datetime.timestamp(now)
             head_values = (str.encode(""), timestamp, str.encode(""), 0, str.encode("INITIAL"), 14)
@@ -98,7 +101,6 @@ else:
     else:
         count = 0 # Number of Transactions
         block_chain_state = "CLEAN" # CLEAN or ERROR 
-        verified = verify(file_path)
 
 # print(arguements)
 

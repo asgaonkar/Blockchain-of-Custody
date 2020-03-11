@@ -1,4 +1,5 @@
 import os
+import uuid
 import struct
 import hashlib
 from datetime import datetime
@@ -51,9 +52,12 @@ def insert(case_id, item_id, file_path):
             print_case_count += 1
 
         now = datetime.now()
+
+        # print()
         
         timestamp = datetime.timestamp(now)
-        head_values = (prev_hash, timestamp, str.encode(case_id), int(i), str.encode("CHECKEDIN"), 35)
+        head_values = (prev_hash, timestamp, uuid.UUID(
+            case_id).bytes, int(i), str.encode("CHECKEDIN"), 35)
         data_value = (str.encode("Add Item: ") + str.encode(i) + str.encode(" to Case: ") + str.encode(case_id))
         block_data_format = struct.Struct('35s')
         packed_head_values = block_head_format.pack(*head_values)

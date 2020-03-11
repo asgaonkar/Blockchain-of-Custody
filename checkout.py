@@ -1,4 +1,5 @@
 import os
+import uuid
 import struct
 import hashlib
 from datetime import datetime
@@ -46,8 +47,7 @@ def checkout(item_id, file_path):
         timestamp = datetime.timestamp(now)
         head_values = (prev_hash, timestamp, case_id, int(
             item_id[0]), str.encode("CHECKEDOUT"), 35)
-        data_value = (str.encode("Checkout Item: ") + str.encode(item_id[0]) +
-                      str.encode(" to Case: ") + case_id)
+        data_value = (str.encode("Checkout Item: ") + str.encode(item_id[0]) + case_id)
         block_data_format = struct.Struct('35s')
         packed_head_values = block_head_format.pack(*head_values)
         packed_data_values = block_data_format.pack(data_value)
@@ -63,7 +63,7 @@ def checkout(item_id, file_path):
         fp.write(packed_data_values)
         fp.close()
 
-        print("Case:", case_id.decode('utf-8'))
+        print("Case:", str(uuid.UUID(bytes=case_id)))
         print("Checked out item:", item_id[0])
         print("\tStatus:", "CHECKEDOUT")
         print("\tTime of action:", now.strftime(

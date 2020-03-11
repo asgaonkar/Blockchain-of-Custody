@@ -32,7 +32,7 @@ def remove(item_id, reason, owner, file_path):
             prev_hash = hashlib.sha1(head_content+data_content).digest()
 
             if int(item_id[0]) == curr_block_head.item_id:
-                case_id = curr_block_head.case_id
+                case_id = str(curr_block_head.case_id)
                 state = curr_block_head.state
         except:
             break
