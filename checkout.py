@@ -2,6 +2,7 @@ import os
 import uuid
 import struct
 import hashlib
+from error import *
 from datetime import datetime
 from collections import namedtuple
 
@@ -75,12 +76,9 @@ def checkout(item_id, file_path):
         # Not removed due to incorrect state
         # Error: Cannot check out a checked out item. Must check it in first.
         # print("Error")
-        pass
+        Incorrect_State()
     else:
         # Item ID not found
-        pass
-
-    if success:
-        return True
-    else:
-        return False
+        Item_Not_Found()
+    
+    sys.exit(0)

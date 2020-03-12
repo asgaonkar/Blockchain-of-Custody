@@ -2,10 +2,10 @@ import os
 import uuid
 import struct
 import hashlib
+from error import *
 from initiate import initiate
 from datetime import datetime
 from collections import namedtuple
-import error
 
 
 def checkin(item_id, file_path):
@@ -82,13 +82,10 @@ def checkin(item_id, file_path):
         # Not removed due to incorrect state
         # Error: Cannot check out a checked out item. Must check it in first.
         # print("Error")
-        pass
+        Incorrect_State()
     else:
         # Item ID not found
-        pass
+        Item_Not_Found()
+    
+    sys.exit(0)
 
-
-    if success:
-        return True
-    else:
-        return False

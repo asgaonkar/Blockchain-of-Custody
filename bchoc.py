@@ -7,7 +7,7 @@ from datetime import datetime
 from collections import namedtuple
 
 # Import modules
-import error
+from error import *
 from initiate import initiate
 from insert import insert
 from remove import remove
@@ -69,7 +69,7 @@ else:
 
         if not to_initiate:
             print("Blockchain file found with INITIAL block.")
-            raise error.Initial_Block_Error
+            Initial_Block_Error()
         else:
             #Initiate a NULL Block
             
@@ -106,3 +106,4 @@ else:
 
 # display(file_path) #For trial and error purpose
 
+sys.exit(0)

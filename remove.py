@@ -2,12 +2,12 @@
 import os
 import struct
 import hashlib
+from error import *
 from datetime import datetime
 from collections import namedtuple
 
 def remove(item_id, reason, owner, file_path):
 
-    success = True
     state = ''
     prev_hash = b''
     case_id = ''
@@ -72,12 +72,11 @@ def remove(item_id, reason, owner, file_path):
     
     elif state.decode('utf-8').rstrip('\x00'):
         # Not removed due to incorrect state
+        Incorrect_State()
         pass
     else:
         # Item ID not found
+        Item_Not_Found()
         pass
 
-    if success:
-        return True
-    else:
-        return False
+    sys.exit(0)
