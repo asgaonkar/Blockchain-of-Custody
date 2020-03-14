@@ -46,46 +46,49 @@ def checkin(item_id, file_path):
 
     fp.close()
 
-    if state.decode('utf-8').rstrip('\x00') == "CHECKEDOUT":
+    try:
 
-        now = datetime.now()
 
-        timestamp = datetime.timestamp(now)
-        head_values = (prev_hash, timestamp, case_id, int(
-            item_id[0]), str.encode("CHECKEDIN"), 35)
-        data_value = (str.encode("Checkin Item: ") +
-                      str.encode(item_id[0]) + str.encode(" to Case: ") + case_id)
-        block_data_format = struct.Struct('35s')
-        packed_head_values = block_head_format.pack(*head_values)
-        packed_data_values = block_data_format.pack(data_value)
-        curr_block_head = block_head._make(
-            block_head_format.unpack(packed_head_values))
-        curr_block_data = block_data._make(
-            block_data_format.unpack(packed_data_values))
+        if state.decode('utf-8').rstrip('\x00') == "CHECKEDOUT":
 
-        # print(curr_block_head, curr_block_data)
+            now = datetime.now()
 
-        fp = open(file_path, 'ab')
-        fp.write(packed_head_values)
-        fp.write(packed_data_values)
-        fp.close()
+            timestamp = datetime.timestamp(now)
+            head_values = (prev_hash, timestamp, case_id, int(
+                item_id[0]), str.encode("CHECKEDIN"), 35)
+            data_value = (str.encode("Checkin Item: ") +
+                        str.encode(item_id[0]) + str.encode(" to Case: ") + case_id)
+            block_data_format = struct.Struct('35s')
+            packed_head_values = block_head_format.pack(*head_values)
+            packed_data_values = block_data_format.pack(data_value)
+            curr_block_head = block_head._make(
+                block_head_format.unpack(packed_head_values))
+            curr_block_data = block_data._make(
+                block_data_format.unpack(packed_data_values))
 
-        print("Case:", str(uuid.UUID(bytes=case_id)))
-        print("Checked in item:", item_id[0])
-        print("\tStatus:", "CHECKEDIN")
-        print("\tTime of action:", now.strftime(
-            '%Y-%m-%dT%H:%M:%S.%f') + 'Z')
+            # print(curr_block_head, curr_block_data)
 
-        success = True
+            fp = open(file_path, 'ab')
+            fp.write(packed_head_values)
+            fp.write(packed_data_values)
+            fp.close()
 
-    elif state.decode('utf-8').rstrip('\x00'):
-        # Not removed due to incorrect state
-        # Error: Cannot check out a checked out item. Must check it in first.
-        # print("Error")
-        Incorrect_State()
-    else:
+            print("Case:", str(uuid.UUID(bytes=case_id)))
+            print("Checked in item:", item_id[0])
+            print("\tStatus:", "CHECKEDIN")
+            print("\tTime of action:", now.strftime(
+                '%Y-%m-%dT%H:%M:%S.%f') + 'Z')
+
+            success = True
+
+        if state.decode('utf-8').rstrip('\x00'):
+            # Not removed due to incorrect state
+            # Error: Cannot check out a checked out item. Must check it in first.
+            # print("Error")
+            Incorrect_State()
+    except:
         # Item ID not found
         Item_Not_Found()
-    
+        
     sys.exit(0)
 
