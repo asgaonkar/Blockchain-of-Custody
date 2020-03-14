@@ -30,8 +30,8 @@ action = args.action
 arguements = {}
 
 
-# file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
-file_path = "chain"
+file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
+# file_path = "chain"
 
 block_head_format = struct.Struct('20s d 16s I 11s I')
 block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
