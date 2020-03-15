@@ -1,80 +1,576 @@
-Test # 000 (0.0/0.0)
-    Here's the output from attempting to make your program:
+Score: 25/85
 
-    chmod +x bchoc
+Init Methods
+    -----------------------------------------------------------
+    Test # 000 (0.0/0.0)
+        Here's the output from attempting to make your program:
+
+        chmod +x bchoc
+
+    -----------------------------------------------------------
+    Test # 001 - init with no pre-existing file (2.0/2.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file not found. Created INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+    -----------------------------------------------------------
+    Test #002 - init with pre-existing valid file (single block) (2.0/2.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+    -----------------------------------------------------------
+    Test #003 - init with pre-existing valid file (multiple blocks) (2.0/2.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+    -----------------------------------------------------------
+    Test #004 - init with pre-existing invalid file (1.0/1.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+
+        stderr from your program:
+
+        Exit code of your program: 1
+
+
+    -----------------------------------------------------------
+    Test #006 - init with additional parameters (1.0/1.0)
+        Running command: `./bchoc init this should cause an error`
+        stdout from your program:
+
+        stderr from your program:
+        ~ usage: bchoc.py [-h] [-c C] [-i I] [-n N] [-y Y] [-o O] [-r] action
+        ~ bchoc.py: error: unrecognized arguments: this should cause an error
+
+        Exit code of your program: 2
+
+Add / Insert Method
+    -----------------------------------------------------------
+    Test #007 - add before init - should create initial block (0.0/2.0)
+        Running command: `./bchoc add -c cde2c223-fdb1-4780-9fa4-0d4dbee85290 -i 625157858`
+        stdout from your program:
+
+        stderr from your program:
+        ~ Traceback (most recent call last):
+        ~   File "bchoc.py", line 47, in <module>
+        ~     insert(arguements["case_id"], arguements["item_id"], file_path)
+        ~   File "/autograder/source/insert.py", line 14, in insert
+        ~     fp = open(file_path, 'rb')
+        ~ FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpf1p9znb5/test007'
+
+        Exit code of your program: 1
+
+        Test Failed: 1 != 0 : Program should have exited with code 0 when invoked with `add` before `init`, but it exited with an error code. In this case, your program should create the initial block and then add the new block as requested.
+
+    -----------------------------------------------------------
+    Test #008 - add with one case_id and one item_id and status of the added item is CHECKEDIN (0.0/2.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c 2f0236bb-2ed9-45ca-a418-9f17a074b46b -i 1855502364`
+        stdout from your program:
+        > Case:  2f0236bb-2ed9-45ca-a418-9f17a074b46b
+        > Added item: 1855502364
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:28:23.724864Z
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Test Failed: False is not true : Block 1 in the chain doesn't equal the expected values (checksum and timestamp aren't checked). Check how you're storing the block.
+        Expected block values: Block(prev_hash=0, timestamp=1584232103.730603, case_id=UUID('2f0236bb-2ed9-45ca-a418-9f17a074b46b'), evidence_id=1855502364, state=b'CHECKEDIN\x00\x00', d_length=0, data=b'')
+        Values from your chain: Block(prev_hash=1004607822040212826186832275360961489457074784183, timestamp=1584232103.724864, case_id=UUID('6bb474a0-179f-18a4-ca45-d92ebb36022f'), evidence_id=1855502364, state=b'CHECKEDIN\x00\x00', d_length=35, data=b'Add Item: 1855502364 to Case: 2f023')
+
+    -----------------------------------------------------------
+    Test #009 - add with one case_id and multiple item_id values and status of the added item is CHECKEDIN (0.0/2.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c 542ac5b9-2b2e-40d9-a478-3016f0383d81 -i 656533582 -i 1713471719 -i 1646112882 -i 56267806 -i 2374531726 -i 2426973021 -i 533816803 -i 1063422251 -i 4061475496 -i 676540466`
+        stdout from your program:
+        > Case:  542ac5b9-2b2e-40d9-a478-3016f0383d81
+        > Added item: 656533582
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.763195Z
+        > Added item: 1713471719
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.763356Z
+        > Added item: 1646112882
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.763440Z
+        > Added item: 56267806
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.763514Z
+        > Added item: 2374531726
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.763587Z
+        > Added item: 2426973021
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.763661Z
+        > Added item: 533816803
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.763734Z
+        > Added item: 1063422251
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.763804Z
+        > Added item: 4061475496
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.763874Z
+        > Added item: 676540466
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.763938Z
+        > Block_Head(hash=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', timestamp=1584233379.675517, case_id=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', item_id=0, state=b'INITIAL\x00\x00\x00\x00', length=14)
+        > Block_Data(data=b'Initial block\x00')
+        > 00000000-0000-0000-0000-000000000000
+        > Block_Head(hash=b'\xa5\x94\xf8P]r\xb4"\xb9\xf8\xe5\xe2\x11\x1fP\xd9x\xf8n\x90', timestamp=1584233379.763195, case_id=b'T*\xc5\xb9+.@\xd9\xa4x0\x16\xf08=\x81', item_id=656533582, state=b'CHECKEDIN\x00\x00', length=0)
+        > Block_Data(data=b'')
+        > 542ac5b9-2b2e-40d9-a478-3016f0383d81
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Byte order of Case ID isn't correct. Encode all integers using the system's native byte ordering.
+        Test Failed: False is not true : New block added to chain doesn't equal the expected values. Check how you're storing the block.
+        Expected block values: Block(prev_hash=0, timestamp=1584233379.774458, case_id=UUID('542ac5b9-2b2e-40d9-a478-3016f0383d81'), evidence_id=656533582, state=b'CHECKEDIN\x00\x00', d_length=0, data=b'')
+        Values from your chain: Block(prev_hash=824569397940124856094733263113967381836025336997, timestamp=1584233379.763195, case_id=UUID('813d38f0-1630-78a4-d940-2e2bb9c52a54'), evidence_id=656533582, state=b'CHECKEDIN\x00\x00', d_length=0, data=b'')
+
+    -----------------------------------------------------------
+    Test #010 - add with no case_id given (0.0/1.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -i 3239645879`
+        stdout from your program:
+        > Case:  None
+
+        stderr from your program:
+        ~ Traceback (most recent call last):
+        ~   File "bchoc.py", line 47, in <module>
+        ~     insert(arguements["case_id"], arguements["item_id"], file_path)
+        ~   File "/autograder/source/insert.py", line 92, in insert
+        ~     case_id).bytes, int(i), str.encode("CHECKEDIN"), 0)
+        ~   File "/usr/lib/python3.6/uuid.py", line 134, in __init__
+        ~     raise TypeError('one of the hex, bytes, bytes_le, fields, '
+        ~ TypeError: one of the hex, bytes, bytes_le, fields, or int arguments must be given
+
+        Exit code of your program: 1
+
+        Test Failed: 'Traceback (most recent call last):' unexpectedly found in 'Traceback (most recent call last):' : Your program was expected to exit with an error code, but I noticed your code had an error, so I can't give you any points for the error code...
+
+    -----------------------------------------------------------
+    Test #011 - add with no item_id given (0.0/1.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c 7613da3f-34c6-48d4-96b0-99dc778cebf0`
+        stdout from your program:
+
+        stderr from your program:
+        ~ Traceback (most recent call last):
+        ~   File "bchoc.py", line 47, in <module>
+        ~     insert(arguements["case_id"], arguements["item_id"], file_path)
+        ~   File "/autograder/source/insert.py", line 76, in insert
+        ~     for i in item_id:
+        ~ TypeError: 'NoneType' object is not iterable
+
+        Exit code of your program: 1
+
+        Test Failed: 'Traceback (most recent call last):' unexpectedly found in 'Traceback (most recent call last):' : Your program was expected to exit with an error code, but I noticed your code had an error, so I can't give you any points for the error code...
+
+    -----------------------------------------------------------
+    Test #012 - add with duplicate item_id given (0.0/1.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c 82e96558-ce5f-4f73-b611-91305a895c5e -i 3734389484`
+        stdout from your program:
+        > Case:  82e96558-ce5f-4f73-b611-91305a895c5e
+        > Added item: 3734389484
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:39.510513Z
+        > Block_Head(hash=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', timestamp=1584233379.427844, case_id=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', item_id=0, state=b'INITIAL\x00\x00\x00\x00', length=14)
+        > Block_Data(data=b'Initial block\x00')
+        > 00000000-0000-0000-0000-000000000000
+        > Block_Head(hash=b'\xb7E\xaf \n\xab\xe34^W>\x86\xfaA\x10d\xc3\xce7\xd7', timestamp=1584233379.510513, case_id=b'\x82\xe9eX\xce_Os\xb6\x11\x910Z\x89\\^', item_id=3734389484, state=b'CHECKEDIN\x00\x00', length=0)
+        > Block_Data(data=b'')
+        > 82e96558-ce5f-4f73-b611-91305a895c5e
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c 82e96558-ce5f-4f73-b611-91305a895c5e -i 3734389484`
+        stdout from your program:
+        > Block_Head(hash=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', timestamp=1584233379.427844, case_id=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', item_id=0, state=b'INITIAL\x00\x00\x00\x00', length=14)
+        > Block_Data(data=b'Initial block\x00')
+        > 00000000-0000-0000-0000-000000000000
+        > Block_Head(hash=b'\xb7E\xaf \n\xab\xe34^W>\x86\xfaA\x10d\xc3\xce7\xd7', timestamp=1584233379.510513, case_id=b'\x82\xe9eX\xce_Os\xb6\x11\x910Z\x89\\^', item_id=3734389484, state=b'CHECKEDIN\x00\x00', length=0)
+        > Block_Data(data=b'')
+        > 82e96558-ce5f-4f73-b611-91305a895c5e
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Test Failed: CalledProcessError not raised : Program should have exited with an error code when called with `add` and a duplicate item ID, but it didn't.
+
+Checkout / Checkin
+    -----------------------------------------------------------
+    Test #013 - checkout after add (0.0/2.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c c416d772-1e46-4666-b2f2-545d3e1da07f -i 1435143376`
+        stdout from your program:
+        > Case:  c416d772-1e46-4666-b2f2-545d3e1da07f
+        > Added item: 1435143376
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:42.174059Z
+        > Block_Head(hash=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', timestamp=1584233382.067716, case_id=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', item_id=0, state=b'INITIAL\x00\x00\x00\x00', length=14)
+        > Block_Data(data=b'Initial block\x00')
+        > 00000000-0000-0000-0000-000000000000
+        > Block_Head(hash=b'\xaa\xe83="&\x02\x8e\xd8\x08\t\xf5v\x8a\xa6\t\x01\xbf\xcb\xd1', timestamp=1584233382.174059, case_id=b'\xc4\x16\xd7r\x1eFFf\xb2\xf2T]>\x1d\xa0\x7f', item_id=1435143376, state=b'CHECKEDIN\x00\x00', length=0)
+        > Block_Data(data=b'')
+        > c416d772-1e46-4666-b2f2-545d3e1da07f
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkout -i 1435143376`
+        stdout from your program:
+        > Case: c416d772-1e46-4666-b2f2-545d3e1da07f
+        > Checked out item: 1435143376
+        > 	Status: CHECKEDOUT
+        > 	Time of action: 2020-03-15T00:49:42.316297Z
+
+        stderr from your program:
+
+        Exit code of your program: 3
+
+        Test Failed: 3 != 0 : Program should have exited with code 0 when invoked with `checkout` after adding an evidence item, but it exited with an error code.
+
+    -----------------------------------------------------------
+    Test #014 - checkin after checkout after add (0.0/2.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c e9ba8d3b-4d95-4ed9-a6bf-6656926628b0 -i 163126745`
+        stdout from your program:
+        > Case:  e9ba8d3b-4d95-4ed9-a6bf-6656926628b0
+        > Added item: 163126745
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T00:49:40.546105Z
+        > Block_Head(hash=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', timestamp=1584233380.466178, case_id=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', item_id=0, state=b'INITIAL\x00\x00\x00\x00', length=14)
+        > Block_Data(data=b'Initial block\x00')
+        > 00000000-0000-0000-0000-000000000000
+        > Block_Head(hash=b'3\xbe\xc9\xd1%\xbd\x12-\x14\x16\xeb\xdf\xc2\xf1QQ\xe2\xc5\xcb\x1b', timestamp=1584233380.546105, case_id=b'\xe9\xba\x8d;M\x95N\xd9\xa6\xbffV\x92f(\xb0', item_id=163126745, state=b'CHECKEDIN\x00\x00', length=0)
+        > Block_Data(data=b'')
+        > e9ba8d3b-4d95-4ed9-a6bf-6656926628b0
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkout -i 163126745`
+        stdout from your program:
+        > Case: e9ba8d3b-4d95-4ed9-a6bf-6656926628b0
+        > Checked out item: 163126745
+        > 	Status: CHECKEDOUT
+        > 	Time of action: 2020-03-15T00:49:40.628611Z
+
+        stderr from your program:
+
+        Exit code of your program: 3
+
+        Test Failed: 3 != 0 : Program should have exited with code 0 with a valid block file, but it exited with an error code.
+
+    -----------------------------------------------------------
+    Test #015 - checkin after add (0.0/1.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c 64169dfc-2d9c-419f-a7f8-8b49c20be35d -i 2224519398`
+        stdout from your program:
+        > Case:  64169dfc-2d9c-419f-a7f8-8b49c20be35d
+        > Added item: 2224519398
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T21:32:11.749584Z
+        > Block_Head(hash=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', timestamp=1584307931.699158, case_id=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', item_id=0, state=b'INITIAL\x00\x00\x00\x00', length=14)
+        > Block_Data(data=b'Initial block\x00')
+        > 00000000-0000-0000-0000-000000000000
+        > Block_Head(hash=b'\x0c"\n\xc5\x15\x87O\xc4S\x0b\xa6;4\xb4\xd5PF\xfb\x08\xb0', timestamp=1584307931.749584, case_id=b'd\x16\x9d\xfc-\x9cA\x9f\xa7\xf8\x8bI\xc2\x0b\xe3]', item_id=2224519398, state=b'CHECKEDIN\x00\x00', length=0)
+        > Block_Data(data=b'')
+        > 64169dfc-2d9c-419f-a7f8-8b49c20be35d
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkin -i 2224519398`
+        stdout from your program:
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Test Failed: CalledProcessError not raised : Program should have exited with an error code when invoked with `checkin` after adding an evidence item, but it exited with exit code 0.
+
+    -----------------------------------------------------------
+    Test #016 - checkin after checkin after checkout after add (0.0/1.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c 17cce941-2718-4f1e-8dbd-b592a1da61c5 -i 2542002115`
+        stdout from your program:
+        > Case:  17cce941-2718-4f1e-8dbd-b592a1da61c5
+        > Added item: 2542002115
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T21:32:11.926337Z
+        > Block_Head(hash=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', timestamp=1584307931.85338, case_id=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', item_id=0, state=b'INITIAL\x00\x00\x00\x00', length=14)
+        > Block_Data(data=b'Initial block\x00')
+        > 00000000-0000-0000-0000-000000000000
+        > Block_Head(hash=b'\xeb\xc0\x14\x01)\xae\x90\xb0\x12\xa7b\xe2[\xdf\xea\xe9\x80mS\x8a', timestamp=1584307931.926337, case_id=b"\x17\xcc\xe9A'\x18O\x1e\x8d\xbd\xb5\x92\xa1\xdaa\xc5", item_id=2542002115, state=b'CHECKEDIN\x00\x00', length=0)
+        > Block_Data(data=b'')
+        > 17cce941-2718-4f1e-8dbd-b592a1da61c5
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkout -i 2542002115`
+        stdout from your program:
+        > Case: 17cce941-2718-4f1e-8dbd-b592a1da61c5
+        > Checked out item: 2542002115
+        > 	Status: CHECKEDOUT
+        > 	Time of action: 2020-03-15T21:32:12.003247Z
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkin -i 2542002115`
+        stdout from your program:
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkin -i 2542002115`
+        stdout from your program:
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Test Failed: CalledProcessError not raised : Program should have exited with an error code when adding an evidence item, checking it out, checking it in, then attempting to invoke `checkin` again, but it exited with exit code 0.
+
+    -----------------------------------------------------------
+    Test #017 - checkout before add (1.0/1.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkout -i 2330329693`
+        stdout from your program:
+
+        stderr from your program:
+
+        Exit code of your program: 3
+
+    -----------------------------------------------------------
+    Test #018 - checkin before add (1.0/1.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkin -i 21729847`
+        stdout from your program:
+
+        stderr from your program:
+
+        Exit code of your program: 3
+
+    -----------------------------------------------------------
+    Test #019 - checkin after remove (0.0/1.0)
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c f582b25c-d363-42a0-89fd-1e2e41be6844 -i 238108143`
+        stdout from your program:
+        > Case:  f582b25c-d363-42a0-89fd-1e2e41be6844
+        > Added item: 238108143
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T21:32:12.212104Z
+        > Block_Head(hash=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', timestamp=1584307932.160546, case_id=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', item_id=0, state=b'INITIAL\x00\x00\x00\x00', length=14)
+        > Block_Data(data=b'Initial block\x00')
+        > 00000000-0000-0000-0000-000000000000
+        > Block_Head(hash=b',\xb8M\xb1\xd5\x15,\xd7t\xa7\xf2\x1a\x99\xe53\xb7\x17\xdf\xbb,', timestamp=1584307932.212104, case_id=b'\xf5\x82\xb2\\\xd3cB\xa0\x89\xfd\x1e.A\xbehD', item_id=238108143, state=b'CHECKEDIN\x00\x00', length=0)
+        > Block_Data(data=b'')
+        > f582b25c-d363-42a0-89fd-1e2e41be6844
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkout -i 238108143`
+        stdout from your program:
+        > Case: f582b25c-d363-42a0-89fd-1e2e41be6844
+        > Checked out item: 238108143
+        > 	Status: CHECKEDOUT
+        > 	Time of action: 2020-03-15T21:32:12.263309Z
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkin -i 238108143`
+        stdout from your program:
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc remove -i 238108143 -y DISPOSED`
+        stdout from your program:
+
+        stderr from your program:
+
+        Exit code of your program: 3
+
+        Test Failed: 3 != 0 : Program should have exited with code 0 with a valid block file, but it exited with an error code.
+
+    -----------------------------------------------------------
+    Test #020 - checkout after remove (0.0/1.0)    
+        Running command: `./bchoc init`
+        stdout from your program:
+        > Blockchain file found with INITIAL block.
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc add -c 6918a93c-3c0c-4fd2-81aa-97a0d7c0f823 -i 3184272704`
+        stdout from your program:
+        > Case:  6918a93c-3c0c-4fd2-81aa-97a0d7c0f823
+        > Added item: 3184272704
+        > 	Status: CHECKEDIN
+        > 	Time of action: 2020-03-15T21:32:13.158703Z
+        > Block_Head(hash=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', timestamp=1584307933.085065, case_id=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', item_id=0, state=b'INITIAL\x00\x00\x00\x00', length=14)
+        > Block_Data(data=b'Initial block\x00')
+        > 00000000-0000-0000-0000-000000000000
+        > Block_Head(hash=b'R\xcb\xd7\xd7L4\x80S\x02\xeb%O\x14I\xc2\xcc\xa9\xf0C\x8d', timestamp=1584307933.158703, case_id=b'i\x18\xa9<<\x0cO\xd2\x81\xaa\x97\xa0\xd7\xc0\xf8#', item_id=3184272704, state=b'CHECKEDIN\x00\x00', length=0)
+        > Block_Data(data=b'')
+        > 6918a93c-3c0c-4fd2-81aa-97a0d7c0f823
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkout -i 3184272704`
+        stdout from your program:
+        > Case: 6918a93c-3c0c-4fd2-81aa-97a0d7c0f823
+        > Checked out item: 3184272704
+        > 	Status: CHECKEDOUT
+        > 	Time of action: 2020-03-15T21:32:13.233493Z
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc checkin -i 3184272704`
+        stdout from your program:
+
+        stderr from your program:
+
+        Exit code of your program: 0
+
+        Running command: `./bchoc remove -i 3184272704 -y DESTROYED`
+        stdout from your program:
+
+        stderr from your program:
+
+        Exit code of your program: 3
+
+        Test Failed: 3 != 0 : Program should have exited with code 0 with a valid block file, but it exited with an error code.
+
+Remove
+-----------------------------------------------------------
+
 
 -----------------------------------------------------------
 
-Test # 001 - init with no pre-existing file (2.0/2.0)
-    Running command: `./bchoc init`
-    stdout from your program:
-    > Blockchain file not found. Created INITIAL block.
-
-    stderr from your program:
-
-    Exit code of your program: 0
-
------------------------------------------------------------
-
-Test #002 - init with pre-existing valid file (single block) (2.0/2.0)
-    Running command: `./bchoc init`
-    stdout from your program:
-    > Blockchain file found with INITIAL block.
-
-    stderr from your program:
-
-    Exit code of your program: 0
-
------------------------------------------------------------
-
-Test #003 - init with pre-existing valid file (multiple blocks) (2.0/2.0)
-    Running command: `./bchoc init`
-    stdout from your program:
-    > Blockchain file found with INITIAL block.
-
-    stderr from your program:
-
-    Exit code of your program: 0
-
------------------------------------------------------------
-
-Test #004 - init with pre-existing invalid file (1.0/1.0)
-    Running command: `./bchoc init`
-    stdout from your program:
-
-    stderr from your program:
-
-    Exit code of your program: 1
-
-
------------------------------------------------------------
-
-Test #006 - init with additional parameters (1.0/1.0)
-    Running command: `./bchoc init this should cause an error`
-    stdout from your program:
-
-    stderr from your program:
-    ~ usage: bchoc.py [-h] [-c C] [-i I] [-n N] [-y Y] [-o O] [-r] action
-    ~ bchoc.py: error: unrecognized arguments: this should cause an error
-
-    Exit code of your program: 2
-
------------------------------------------------------------
-
-
-
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
