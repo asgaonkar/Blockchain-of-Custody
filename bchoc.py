@@ -30,8 +30,8 @@ action = args.action
 arguements = {}
 
 
-file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
-# file_path = "chain"
+# file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
+file_path = "chain"
 
 block_head_format = struct.Struct('20s d 16s I 11s I')
 block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
@@ -69,12 +69,10 @@ else:
 
         if not to_initiate:
             print("Blockchain file found with INITIAL block.")
-            Initial_Block_Error()
+            # Successfull Exit
+            sys.exit(0)
         else:
             #Initiate a NULL Block
-            
-            trial = '65cc391d-6568-4dcc-a3f1-86a2f04140f3'
-            x_trial = uuid.UUID(trial)
 
             now = datetime.now()
             timestamp = datetime.timestamp(now)
@@ -96,7 +94,6 @@ else:
 
             #Initiated
             prev_hash = hashlib.sha1(packed_head_values+packed_data_values).digest()
-            print("Blockchain file not found. Created INITIAL block.")
       
     else:
         count = 0 # Number of Transactions
