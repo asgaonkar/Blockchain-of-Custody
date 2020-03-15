@@ -10,3 +10,11 @@ def Incorrect_State():
 def Item_Not_Found():
     # 3 - Item not found
     sys.exit(3)
+
+def Arguement_Error():
+    # 4 - Incorrect Arguements
+    sys.exit(4)
+
+def Duplicate_Entry():
+    # 5 - Duplicate Entry
+    sys.exit(5)

@@ -46,11 +46,21 @@ def remove(item_id, reason, owner, file_path):
             now = datetime.now()
 
             timestamp = datetime.timestamp(now)
-            head_values = (prev_hash, timestamp, case_id, int(item_id[0]), str.encode(reason), len(owner))
-            data_value = owner
-            block_data_format = struct.Struct(str(len(owner)) + 's')
+            if owner:
+                head_values = (prev_hash, timestamp, case_id, int(item_id[0]), str.encode(reason), len(owner))
+                block_data_format = struct.Struct(str(len(owner)) + 's')
+                data_value = owner
+                packed_data_values = block_data_format.pack(
+                    str.encode(data_value))
+            else:
+                head_values = (prev_hash, timestamp, case_id, int(item_id[0]), str.encode(reason), 0)
+                block_data_format = struct.Struct('0s')
+                data_value = b''
+                packed_data_values = block_data_format.pack(data_value)
+            
+            
             packed_head_values = block_head_format.pack(*head_values)
-            packed_data_values = block_data_format.pack(str.encode(data_value))
+            
             curr_block_head = block_head._make(
                 block_head_format.unpack(packed_head_values))
             curr_block_data = block_data._make(
@@ -71,10 +81,12 @@ def remove(item_id, reason, owner, file_path):
                 '%Y-%m-%dT%H:%M:%S.%f') + 'Z')
 
             success = True
-        
-        if state.decode('utf-8').rstrip('\x00'):
-            # Not removed due to incorrect state
+        else:
             Incorrect_State()
+        
+        # if state.decode('utf-8').rstrip('\x00'):
+        #     # Not removed due to incorrect state
+        #     Incorrect_State()
             
     except:
         # Item ID not found

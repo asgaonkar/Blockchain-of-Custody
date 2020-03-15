@@ -3,6 +3,7 @@ import uuid
 import struct
 import hashlib
 from datetime import datetime
+from error import *
 from collections import namedtuple
 
 def insert(case_id, item_id, file_path):
@@ -10,6 +11,36 @@ def insert(case_id, item_id, file_path):
     print_case_count = 0
 
     success = ''
+
+    try:
+        fp = open(file_path, 'rb')
+        fp.close()
+    except:
+
+        block_head_format = struct.Struct('20s d 16s I 11s I')
+        block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
+        block_data = namedtuple('Block_Data', 'data')
+
+        now = datetime.now()
+        timestamp = datetime.timestamp(now)
+        head_values = (str.encode(""), timestamp, str.encode(
+            ""), 0, str.encode("INITIAL"), 14)
+        data_value = (str.encode("Initial block"))
+        block_data_format = struct.Struct('14s')
+        packed_head_values = block_head_format.pack(*head_values)
+        packed_data_values = block_data_format.pack(data_value)
+        curr_block_head = block_head._make(
+            block_head_format.unpack(packed_head_values))
+        curr_block_data = block_data._make(
+            block_data_format.unpack(packed_data_values))
+
+        # print(curr_block_head)
+        # print(curr_block_data)
+
+        fp = open(file_path, 'wb')
+        fp.write(packed_head_values)
+        fp.write(packed_data_values)
+        fp.close()
 
     fp = open(file_path, 'rb')
 
@@ -45,7 +76,7 @@ def insert(case_id, item_id, file_path):
     
         if int(i) in prev_id:
             # print("----Nope----")
-            continue
+            Duplicate_Entry()
 
         if not print_case_count:
             print("Case: ", case_id)
@@ -57,9 +88,9 @@ def insert(case_id, item_id, file_path):
         
         timestamp = datetime.timestamp(now)
         head_values = (prev_hash, timestamp, uuid.UUID(
-            case_id).bytes, int(i), str.encode("CHECKEDIN"), 35)
-        data_value = (str.encode("Add Item: ") + str.encode(i) + str.encode(" to Case: ") + str.encode(case_id))
-        block_data_format = struct.Struct('35s')
+            case_id).bytes, int(i), str.encode("CHECKEDIN"), 0)
+        data_value = b''
+        block_data_format = struct.Struct('0s')
         packed_head_values = block_head_format.pack(*head_values)
         packed_data_values = block_data_format.pack(data_value)
         curr_block_head = block_head._make(block_head_format.unpack(packed_head_values))

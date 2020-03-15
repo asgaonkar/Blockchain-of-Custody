@@ -30,8 +30,8 @@ action = args.action
 arguements = {}
 
 
-# file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
-file_path = "chain"
+file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
+# file_path = "chain"
 
 block_head_format = struct.Struct('20s d 16s I 11s I')
 block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
@@ -44,7 +44,10 @@ if action not in ["init", "verify"]:
     if action == "add":
         arguements["case_id"] = args.c
         arguements["item_id"] = args.i
-        insert(arguements["case_id"], arguements["item_id"], file_path)
+        if arguements["case_id"] and arguements["item_id"]:
+            insert(arguements["case_id"], arguements["item_id"], file_path)
+        else:
+            Arguement_Error()
     elif action == "checkout" or action == "checkin":
         arguements["item_id"] = args.i
         if action == "checkout":

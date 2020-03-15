@@ -49,9 +49,9 @@ def checkout(item_id, file_path):
 
             timestamp = datetime.timestamp(now)
             head_values = (prev_hash, timestamp, case_id, int(
-                item_id[0]), str.encode("CHECKEDOUT"), 35)
-            data_value = (str.encode("Checkout Item: ") + str.encode(item_id[0]) + case_id)
-            block_data_format = struct.Struct('35s')
+                item_id[0]), str.encode("CHECKEDOUT"), 0)
+            data_value = b''
+            block_data_format = struct.Struct('0s')
             packed_head_values = block_head_format.pack(*head_values)
             packed_data_values = block_data_format.pack(data_value)
             curr_block_head = block_head._make(
@@ -73,12 +73,14 @@ def checkout(item_id, file_path):
                 '%Y-%m-%dT%H:%M:%S.%f') + 'Z')
 
             success = True
-
-        if state.decode('utf-8').rstrip('\x00'):
-            # Not removed due to incorrect state
-            # Error: Cannot check out a checked out item. Must check it in first.
-            # print("Error")
+        else:
             Incorrect_State()
+
+        # if state.decode('utf-8').rstrip('\x00'):
+        #     # Not removed due to incorrect state
+        #     # Error: Cannot check out a checked out item. Must check it in first.
+        #     # print("Error")
+        #     Incorrect_State()
     except:
         # Item ID not found
         Item_Not_Found()

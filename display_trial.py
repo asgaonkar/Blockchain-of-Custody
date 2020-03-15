@@ -1,9 +1,10 @@
+import uuid
 import struct
 from collections import namedtuple
 
 def display(file_path):
 
-    block_head_format = struct.Struct('20s d 16s I 11s I')
+    block_head_format = struct.Struct('@20s d 16s I 11s I')
     block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
     block_data = namedtuple('Block_Data', 'data')
 
@@ -22,6 +23,7 @@ def display(file_path):
                 block_data_format.unpack(data_content))
             print(curr_block_head)
             print(curr_block_data)
+            print(uuid.UUID(bytes=curr_block_head.case_id))
         except:
             break
 
