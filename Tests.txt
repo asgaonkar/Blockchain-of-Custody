@@ -1,0 +1,80 @@
+Test # 000 (0.0/0.0)
+    Here's the output from attempting to make your program:
+
+    chmod +x bchoc
+
+-----------------------------------------------------------
+
+Test # 001 - init with no pre-existing file (2.0/2.0)
+    Running command: `./bchoc init`
+    stdout from your program:
+    > Blockchain file not found. Created INITIAL block.
+
+    stderr from your program:
+
+    Exit code of your program: 0
+
+-----------------------------------------------------------
+
+Test #002 - init with pre-existing valid file (single block) (2.0/2.0)
+    Running command: `./bchoc init`
+    stdout from your program:
+    > Blockchain file found with INITIAL block.
+
+    stderr from your program:
+
+    Exit code of your program: 0
+
+-----------------------------------------------------------
+
+Test #003 - init with pre-existing valid file (multiple blocks) (2.0/2.0)
+    Running command: `./bchoc init`
+    stdout from your program:
+    > Blockchain file found with INITIAL block.
+
+    stderr from your program:
+
+    Exit code of your program: 0
+
+-----------------------------------------------------------
+
+Test #004 - init with pre-existing invalid file (1.0/1.0)
+    Running command: `./bchoc init`
+    stdout from your program:
+
+    stderr from your program:
+
+    Exit code of your program: 1
+
+
+-----------------------------------------------------------
+
+Test #006 - init with additional parameters (1.0/1.0)
+    Running command: `./bchoc init this should cause an error`
+    stdout from your program:
+
+    stderr from your program:
+    ~ usage: bchoc.py [-h] [-c C] [-i I] [-n N] [-y Y] [-o O] [-r] action
+    ~ bchoc.py: error: unrecognized arguments: this should cause an error
+
+    Exit code of your program: 2
+
+-----------------------------------------------------------
+
+
+
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
