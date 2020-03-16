@@ -99,7 +99,7 @@ At this time, text is free-form and does not have any requirements.
 
 ## Data Structure
 
-Offset | Length (Byte) | Field Name - Description
+Block Offset  | Length in Byte | Field Name - Description
 --- | --- | ---
 0x00,  0<sub>10</sub> | 20* (160 bits) | **Previous Hash** - SHA1 of previous block
 0x18,  24<sub>10</sub> | 8 (64 bits) | **Timestamp** - Regular Unix timestamp. Must be printed in ISO 8601 format anytime displayed to user. Stored as an 8-byte float (double).
@@ -107,7 +107,7 @@ Offset | Length (Byte) | Field Name - Description
 0x30, 48<sub>10</sub> | 4 (32 bits) | **Evidence Item ID** - 4-byte integer.
 0x34, 52<sub>10</sub> | 11** (88 bits) | **State** - Must be one of: INITIAL (for the initial block ONLY), CHECKEDIN, CHECKEDOUT, DISPOSED, DESTROYED, or RELEASED.
 0x40, 64<sub>10</sub> | 4 (32 bits) | **Data Length** (byte count) - 4-byte integer.
-0x44, 68<sub>10</sub> | 0 to (2^32) | **Data** - Free form text with byte length specified in Data Length.
+0x44, 68<sub>10</sub> | 0 to (2<sup>32</sup>) | **Data** - Free form text with byte length specified in Data Length.
 
 
 ### Initial Block
