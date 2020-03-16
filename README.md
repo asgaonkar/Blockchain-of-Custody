@@ -19,6 +19,10 @@ bchoc init
 bchoc verify
 ```
 
+## Features
+
+Below listed are action and arguements along with their descriptions
+
 ### Actions
 
 1. Add
@@ -93,17 +97,36 @@ Information about the lawful owner to whom the evidence was released.
 At this time, text is free-form and does not have any requirements.
 ```
 
+## Data Structure
 
+Offset | Length (Byte) | Field Name - Description
+--- | --- | ---
+0x00,  0<sub>10</sub> | 20* (160 bits) | **Previous Hash** - SHA1 of previous block
+0x18,  24<sub>10</sub> | 8 (64 bits) | **Timestamp** - Regular Unix timestamp. Must be printed in ISO 8601 format anytime displayed to user. Stored as an 8-byte float (double).
+0x20, 32<sub>10</sub> | 16 (128 bits) | **Case ID** - UUID stored as an integer.
+0x30, 48<sub>10</sub> | 4 (32 bits) | **Evidence Item ID** - 4-byte integer.
+0x34, 52<sub>10</sub> | 11** (88 bits) | **State** - Must be one of: INITIAL (for the initial block ONLY), CHECKEDIN, CHECKEDOUT, DISPOSED, DESTROYED, or RELEASED.
+0x40, 64<sub>10</sub> | 4 (32 bits) | **Data Length** (byte count) - 4-byte integer.
+0x44, 68<sub>10</sub> | 0 to (2^32) | **Data** - Free form text with byte length specified in Data Length.
+
+
+### Initial Block
 
 When the program starts it should check if there are any existing blocks and create a block with the following information if it doesn’t find any:
 
-* Previous Hash: None, null, etc.
-* Timestamp: Current time
-* Case ID: None, null, etc.
-* Evidence Item ID: None, null, etc.
-* State: “INITIAL”
-* Data Length: 14 bytes
-* Data: The string: “Initial block”
+* **Previous Hash:** None, null, etc.
+* **Timestamp:** Current time
+* **Case ID:** None, null, etc.
+* **Evidence Item ID:** None, null, etc.
+* **State:** “INITIAL”
+* **Data Length:** 14 bytes
+* **Data (str):** “Initial block”
+
+### Note
+
+> *The length of the Previous Hash field is only 20 bytes, but due to byte alignment, the next field doesn’t start until offset 0x18, or byte 24 in decimal.
+
+> **Similarly, the State field is padded with an extra byte (for a total of 12 bytes or 96 bits), making the Data Length field’s offset 0x40, or byte 64 in decimal.
 
 All block data must be stored in a binary format. Plain text, JSON, CSV, and other similar formats are invalid for this assignment.
 
