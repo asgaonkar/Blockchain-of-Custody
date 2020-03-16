@@ -102,7 +102,7 @@ At this time, text is free-form and does not have any requirements.
 Block Offset  | Length in Byte | Field Name - Description
 --- | --- | ---
 0x00,  0<sub>10</sub> | 20* (160 bits) | **Previous Hash** - SHA1 of previous block
-0x18,  24<sub>10</sub> | 8 (64 bits) | **Timestamp** - Regular Unix timestamp. Must be printed in ISO 8601 format anytime displayed to user. Stored as an 8-byte float (double).
+0x18,  24<sub>10</sub> | 8 (64 bits) | **Timestamp** - Regular Unix timestamp (Double). ISO 8601 format.
 0x20, 32<sub>10</sub> | 16 (128 bits) | **Case ID** - UUID stored as an integer.
 0x30, 48<sub>10</sub> | 4 (32 bits) | **Evidence Item ID** - 4-byte integer.
 0x34, 52<sub>10</sub> | 11** (88 bits) | **State** - Must be one of: INITIAL (for the initial block ONLY), CHECKEDIN, CHECKEDOUT, DISPOSED, DESTROYED, or RELEASED.
