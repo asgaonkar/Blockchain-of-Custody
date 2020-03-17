@@ -12,6 +12,9 @@ def remove(item_id, reason, owner, file_path):
     prev_hash = b''
     case_id = ''
 
+    if reason not in ["DISPOSED", "DESTROYED","RELEASED"]:
+        Incorrect_State()
+
     block_head_format = struct.Struct('20s d 16s I 11s I')
     block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
     block_data = namedtuple('Block_Data', 'data')

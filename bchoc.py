@@ -59,6 +59,7 @@ if action not in ["init", "verify"]:
         arguements["number"] = args.n
         arguements["case_id"] = args.c
         arguements["item_id"] = args.i
+        #log call
     else:
         arguements["item_id"] = args.i
         arguements["reason"] = args.y
@@ -99,8 +100,10 @@ else:
             prev_hash = hashlib.sha1(packed_head_values+packed_data_values).digest()
       
     else:
+        # Verify
         count = 0 # Number of Transactions
         block_chain_state = "CLEAN" # CLEAN or ERROR 
+        # VErify Call
 
 # print(arguements)
 
