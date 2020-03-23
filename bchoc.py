@@ -14,6 +14,7 @@ from remove import remove
 from checkin import checkin
 from checkout import checkout
 from display_trial import display
+from log import log
 
 #Declare arguements
 parser = argparse.ArgumentParser()
@@ -30,8 +31,8 @@ action = args.action
 arguements = {}
 
 
-file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
-# file_path = "chain"
+# file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
+file_path = "chain"
 
 block_head_format = struct.Struct('20s d 16s I 11s I')
 block_head = namedtuple('Block_Head', 'hash timestamp case_id item_id state length')
@@ -59,6 +60,7 @@ if action not in ["init", "verify"]:
         arguements["number"] = args.n
         arguements["case_id"] = args.c
         arguements["item_id"] = args.i
+        log(arguements["reverse"],arguements["number"],arguements["case_id"],arguements["item_id"],file_path)
         #log call
     else:
         arguements["item_id"] = args.i
