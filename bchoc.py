@@ -33,8 +33,8 @@ arguements = {}
 
 
 <<<<<<< HEAD
-# file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
-file_path = "chain"
+file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
+# file_path = "chain"
 =======
 # Read using environment variable in Gradescope
 file_path = os.getenv('BCHOC_FILE_PATH')
