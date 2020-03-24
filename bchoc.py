@@ -23,7 +23,7 @@ parser.add_argument("action")
 parser.add_argument('-c')  # Case ID
 parser.add_argument('-i', action='append')  # Item ID
 parser.add_argument('-n')  # Number of entries for log
-parser.add_argument('-y')  # Reason for removing
+parser.add_argument('-y', '--why')  # Reason for removing
 parser.add_argument('-o', nargs='*')  # Owner Info
 parser.add_argument('-r', action="store_true")  # Reverse log
 args = parser.parse_args()
@@ -67,7 +67,7 @@ if action not in ["init", "verify"]:
         #log call
     else:
         arguements["item_id"] = args.i
-        arguements["reason"] = args.y
+        arguements["reason"] = args.why
         arguements["owner"] = args.o
         remove(arguements["item_id"],
                arguements["reason"], arguements["owner"], file_path)
