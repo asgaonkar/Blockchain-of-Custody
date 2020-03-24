@@ -14,6 +14,7 @@ from remove import remove
 from checkin import checkin
 from checkout import checkout
 from display_trial import display
+from log import log
 
 # Declare arguements
 parser = argparse.ArgumentParser()
@@ -62,7 +63,8 @@ if action not in ["init", "verify"]:
         arguements["number"] = args.n
         arguements["case_id"] = args.c
         arguements["item_id"] = args.i
-        # log call
+        log(arguements["reverse"],arguements["number"],arguements["case_id"],arguements["item_id"],file_path)
+        #log call
     else:
         arguements["item_id"] = args.i
         arguements["reason"] = args.why
