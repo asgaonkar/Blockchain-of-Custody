@@ -32,14 +32,14 @@ action = args.action
 arguements = {}
 
 
-<<<<<<< HEAD
-file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
-# file_path = "chain"
-=======
+# <<<<<<< HEAD
+# file_path = os.getenv('BCHOC_FILE_PATH') # Read using environment variable in Gradescope
+file_path = "chain"
+# =======
 # Read using environment variable in Gradescope
-file_path = os.getenv('BCHOC_FILE_PATH')
+# file_path = os.getenv('BCHOC_FILE_PATH')
 # file_path = "chain"
->>>>>>> 8e4136958cd7b843cf82d388c5d5e27bd352958a
+# >>>>>>> 8e4136958cd7b843cf82d388c5d5e27bd352958a
 
 block_head_format = struct.Struct('20s d 16s I 11s I')
 block_head = namedtuple(
@@ -68,12 +68,12 @@ if action not in ["init", "verify"]:
         arguements["number"] = args.n
         arguements["case_id"] = args.c
         arguements["item_id"] = args.i
-<<<<<<< HEAD
+# <<<<<<< HEAD
         log(arguements["reverse"],arguements["number"],arguements["case_id"],arguements["item_id"],file_path)
         #log call
-=======
+# =======
         # log call
->>>>>>> 8e4136958cd7b843cf82d388c5d5e27bd352958a
+# >>>>>>> 8e4136958cd7b843cf82d388c5d5e27bd352958a
     else:
         arguements["item_id"] = args.i
         arguements["reason"] = args.y
