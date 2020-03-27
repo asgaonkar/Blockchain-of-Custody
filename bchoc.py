@@ -117,8 +117,6 @@ else:
         block_chain_state = "CLEAN"  # CLEAN or ERROR
         # VErify Call
 
-# print(arguements)
-
 # display(file_path) #For trial and error purpose
 
 sys.exit(0)
