@@ -6,8 +6,12 @@ from error import *
 from datetime import datetime
 from collections import namedtuple
 
+from display_trial import display
+
+
 
 def remove(item_id, reason, owner, file_path):
+
 
     state = ''
     prev_hash = b''
@@ -53,13 +57,21 @@ def remove(item_id, reason, owner, file_path):
 
             timestamp = datetime.timestamp(now)
             if owner:
-
-                head_values = (prev_hash, timestamp, case_id, int(
-                    item_id[0]), str.encode(reason), len(owner))
-
-                block_data_format = struct.Struct(str(len(owner)) + 's')
-
+                
+                print("---------------------Owner")
+                
                 data_value = " ".join(owner)
+                
+                head_values = (prev_hash, timestamp, case_id, int(
+                    item_id[0]), str.encode(reason), len(data_value)+1)
+
+                
+
+                block_data_format = struct.Struct(str(len(data_value)+1) + 's')
+
+
+
+                print(str(len(owner)) + 's', data_value, len(data_value))
 
                 packed_data_values = block_data_format.pack(
                     str.encode(data_value))

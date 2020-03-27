@@ -9,7 +9,6 @@ def display(file_path):
     block_data = namedtuple('Block_Data', 'data')
 
     fp = open(file_path, 'rb')
-    # fp = open('test', 'rb')
 
     while True:
 
@@ -23,7 +22,6 @@ def display(file_path):
                 block_data_format.unpack(data_content))
             print(curr_block_head)
             print(curr_block_data)
-            print(uuid.UUID(bytes=curr_block_head.case_id))
         except:
             break
 
