@@ -115,6 +115,4 @@ def remove(item_id, reason, owner, file_path):
         # Item ID not found
         Item_Not_Found()
 
-    # display(file_path)
-
     sys.exit(0)

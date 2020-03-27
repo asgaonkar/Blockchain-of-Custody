@@ -18,3 +18,5 @@ def Arguement_Error():
 def Duplicate_Entry():
     # 5 - Duplicate Entry
     sys.exit(5)
+
+# Add custom errors
