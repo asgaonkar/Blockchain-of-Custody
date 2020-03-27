@@ -69,6 +69,9 @@ if action not in ["init", "verify"]:
         arguements["item_id"] = args.i
         arguements["reason"] = args.why
         arguements["owner"] = args.o
+        if(arguements["reason"]=="RELEASED"):
+            if not arguements["owner"]:
+                Arguement_Error()
         remove(arguements["item_id"],
                arguements["reason"], arguements["owner"], file_path)
 
