@@ -23,7 +23,6 @@ def display(file_path):
                 block_data_format.unpack(data_content))
             print(curr_block_head)
             print(curr_block_data)
-            print(uuid.UUID(bytes=curr_block_head.case_id))
         except:
             break
 
