@@ -53,8 +53,13 @@ def log(reverse, number, case_id, item_id, file_path):
     if(case_id):
         i=0
         while(i<len(blocks)):
-            case = str(uuid.UUID(bytes=blocks[i][0].case_id))
-            # print(case)
+
+            caseid = b""
+            rev_case_id = blocks[i][0].case_id
+            for j in range(0, len(rev_case_id)):
+                caseid = bytes([rev_case_id[j]]) + caseid
+            case = str(uuid.UUID(bytes=caseid))
+
             if(case != case_id):
                 blocks.pop(i)
             else:
@@ -72,7 +77,7 @@ def log(reverse, number, case_id, item_id, file_path):
             blocks.pop(i)
 
 
-
+    # ctr=0
     for block in blocks:
         # print("Block Head")
         # for j in i[0]:
@@ -82,12 +87,22 @@ def log(reverse, number, case_id, item_id, file_path):
         #     print(j)
         # print()
         # print()
-        print("Case:",uuid.UUID(bytes=block[0].case_id))
+        caseid=b""
+        rev_case_id = block[0].case_id
+        for i in range(0,len(rev_case_id)):
+            caseid=bytes([rev_case_id[i]]) + caseid
+
+        
+        print("Case:",uuid.UUID(bytes=caseid))
         print("Item:",block[0].item_id)
-        print("Action:",block[0].state.decode())
+        action = ""
+        for i in block[0].state.decode():
+            if(i.isalpha()):
+                action+=i
+        print("Action:",action)
         date = str(datetime.fromtimestamp(block[0].timestamp)).split()[0]
         time = str(datetime.fromtimestamp(block[0].timestamp)).split()[1]
         date_time = date+"T"+time+"Z"
 
         print("Time:",date_time)
-        # print()
+        print()
