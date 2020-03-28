@@ -25,7 +25,7 @@ parser.add_argument('-i', action='append')  # Item ID
 parser.add_argument('-n')  # Number of entries for log
 parser.add_argument('-y', '--why')  # Reason for removing
 parser.add_argument('-o', nargs='*')  # Owner Info
-parser.add_argument('-r', action="store_true")  # Reverse log
+parser.add_argument('-r', '--reverse', action="store_true")  # Reverse log
 args = parser.parse_args()
 
 action = args.action
@@ -59,7 +59,7 @@ if action not in ["init", "verify"]:
         else:
             checkin(arguements["item_id"], file_path)
     elif action == "log":
-        arguements["reverse"] = args.r
+        arguements["reverse"] = args.reverse
         arguements["number"] = args.n
         arguements["case_id"] = args.c
         arguements["item_id"] = args.i
@@ -116,8 +116,6 @@ else:
         count = 0  # Number of Transactions
         block_chain_state = "CLEAN"  # CLEAN or ERROR
         # VErify Call
-
-# print(arguements)
 
 # display(file_path) #For trial and error purpose
 

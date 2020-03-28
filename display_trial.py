@@ -9,7 +9,6 @@ def display(file_path):
     block_data = namedtuple('Block_Data', 'data')
 
     fp = open(file_path, 'rb')
-    # fp = open('test', 'rb')
 
     while True:
 

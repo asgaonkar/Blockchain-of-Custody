@@ -83,11 +83,6 @@ def checkin(item_id, file_path):
         else:
             Incorrect_State()
 
-        # if state.decode('utf-8').rstrip('\x00'):
-        #     # Not removed due to incorrect state
-        #     # Error: Cannot check out a checked out item. Must check it in first.
-        #     # print("Error")
-        #     Incorrect_State()
     except:
         # Item ID not found
         Item_Not_Found()

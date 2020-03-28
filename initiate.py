@@ -51,8 +51,6 @@ def initiate(file_path):
     except:
         print("Blockchain file not found.")
         Initial_Block_Error()
-    # print(curr_block_head)
-    # print(curr_block_data)
 
     fp.close()
 
