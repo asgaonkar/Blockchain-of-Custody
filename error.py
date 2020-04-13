@@ -19,4 +19,15 @@ def Duplicate_Entry():
     # 5 - Duplicate Entry
     sys.exit(5)
 
+def Invalid_Block():
+    # 6 - Invalid Block
+    sys.exit(6)
+
+def Invalid_Chain():
+    # 7 - Faulty Chain
+    sys.exit(7)
+
+def Duplicate_Hashes():
+    # Duplicate Hashes
+    sys.exit(8)
 # Add custom errors

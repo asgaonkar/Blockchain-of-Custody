@@ -15,6 +15,7 @@ from checkin import checkin
 from checkout import checkout
 from display_trial import display
 from log import log
+from verify import verify
 
 # Declare arguements
 parser = argparse.ArgumentParser()
@@ -115,7 +116,7 @@ else:
         # Verify
         count = 0  # Number of Transactions
         block_chain_state = "CLEAN"  # CLEAN or ERROR
-        # VErify Call
+        verify(file_path)
 
 # display(file_path) #For trial and error purpose
 
