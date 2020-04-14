@@ -20,6 +20,8 @@ def verify(file_path):
     blocks=[]
     hashes = []
 
+    prev_hash = []
+
     blocks_dict = {}
 
     fp = open(file_path, 'rb')
@@ -31,11 +33,10 @@ def verify(file_path):
     while True:
 
         try:
-            try:
-                head_content = fp.read(block_head_format.size)
-            except:
-                # Normal Break
-                break
+            
+            head_content = fp.read(block_head_format.size)
+            # print(head_content)
+                
             curr_block_head = block_head._make(block_head_format.unpack(head_content))
             block_data_format = struct.Struct(str(curr_block_head.length) + 's')
             data_content = fp.read(curr_block_head.length)
@@ -43,6 +44,10 @@ def verify(file_path):
             # prev_hash = hashlib.sha1(head_content + data_content).digest()
             blocks.append((curr_block_head,curr_block_data))
             hashes.append(curr_block_head.hash)
+            prev_hash.append(hashlib.sha1(head_content+data_content).digest())
+
+            # print("**Computed Hash: ",hashlib.sha1(head_content+data_content).digest())
+            # print("***Block Hash Variable (Prev): ",curr_block_head.hash)
 
 
             if str(uuid.UUID(bytes=curr_block_head.case_id)) in blocks_dict:
@@ -51,7 +56,7 @@ def verify(file_path):
                 if curr_block_head.item_id in blocks_dict[str(uuid.UUID(bytes=curr_block_head.case_id))].keys():
                     
                     # If an item is there    
-                    print("--- Item Present. \nOld State:",blocks_dict[str(uuid.UUID(bytes=curr_block_head.case_id))][curr_block_head.item_id], "\nNew State:", (curr_block_head.state.decode()).rstrip('\x00'))
+                    # print("--- Item Present. \nOld State:",blocks_dict[str(uuid.UUID(bytes=curr_block_head.case_id))][curr_block_head.item_id], "\nNew State:", (curr_block_head.state.decode()).rstrip('\x00'))
 
 
 
@@ -76,19 +81,24 @@ def verify(file_path):
                             if not curr_block_head.length:
                                 unsuccess = True
                                 break
+                    
                     blocks_dict[str(uuid.UUID(bytes=curr_block_head.case_id))][curr_block_head.item_id] = (curr_block_head.state.decode()).rstrip('\x00')
 
 
                     pass
                 else:
 
-                    print("--- New Item . \nState: (Should be CHECKEDIN)",(curr_block_head.state.decode()).rstrip('\x00'), " ***: ",(curr_block_head.state.decode()).rstrip('\x00') in ["RELEASED", "DISPOSED", "DESTROYED"])
+                    # print("--- New Item . \nState: (Should be CHECKEDIN)",(curr_block_head.state.decode()).rstrip('\x00'), " ***: ",(curr_block_head.state.decode()).rstrip('\x00') in ["RELEASED", "DISPOSED", "DESTROYED"])
 
                     # Check for Remove before adding
                     if (curr_block_head.state.decode()).rstrip('\x00') in ["RELEASED", "DISPOSED", "DESTROYED"]:
                         unsuccess = True
                         break
-                        
+                    
+                    if not (curr_block_head.state.decode()).rstrip('\x00') == "CHECKEDIN":
+                        unsuccess = True
+                        break
+
 
                     # Add new item to case
                     blocks_dict[str(uuid.UUID(bytes=curr_block_head.case_id))][curr_block_head.item_id] = (curr_block_head.state.decode()).rstrip('\x00')
@@ -96,7 +106,7 @@ def verify(file_path):
 
             else:
                 
-                print("--- 1st Item of Case. \nState: (Should be CHECKEDIN)",(curr_block_head.state.decode()).rstrip('\x00'), " ***: ",(curr_block_head.state.decode()).rstrip('\x00') in ["RELEASED", "DISPOSED", "DESTROYED"])
+                # print("--- 1st Item of Case. \nState: (Should be CHECKEDIN)",(curr_block_head.state.decode()).rstrip('\x00'), " ***: ",(curr_block_head.state.decode()).rstrip('\x00') in ["RELEASED", "DISPOSED", "DESTROYED"])
 
                 # Check for Remove before adding
                 if (curr_block_head.state.decode()).rstrip('\x00') in ["RELEASED", "DISPOSED", "DESTROYED"]:
@@ -106,7 +116,7 @@ def verify(file_path):
                 blocks_dict[str(uuid.UUID(bytes=curr_block_head.case_id))] = {}
                 blocks_dict[str(uuid.UUID(bytes=curr_block_head.case_id))][curr_block_head.item_id] = (curr_block_head.state.decode()).rstrip('\x00')
 
-            print(blocks_dict)
+            
             count+=1
         except:
 
@@ -115,8 +125,13 @@ def verify(file_path):
                 unsuccess = True
                 break
             
-            # Invalid Block
-            unsuccess = True
+            if len(head_content):
+                print("Invalid Block")
+                # Invalid Block
+                unsuccess = True
+                break
+
+            break
     
     fp.close()
     
@@ -126,4 +141,9 @@ def verify(file_path):
     if len(hashes) != len(set(hashes)):
         Duplicate_Hashes()
 
+    print("---------------------------------------------------------------------")
     print(blocks)
+    print("---------------------------------------------------------------------")
+    print()
+    if prev_hash[:-1] != hashes[1:]:
+        Invalid_Chain()
